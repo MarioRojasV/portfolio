@@ -1,13 +1,54 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Projects from '../components/Projects.astro';
+
+const sections = [
+  { id: 'about', title: 'About' },
+  { id: 'projects', title: 'Projects' },
+  { id: 'experience', title: 'Experience' },
+  { id: 'certifications', title: 'Certifications' },
+  { id: 'contact', title: 'Contact' },
+];
 ---
 
 <Layout>
-  <main class="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-6">
-    <p class="text-sm uppercase tracking-widest text-cyan-400">Welcome</p>
-    <h1 class="mt-2 text-4xl font-bold sm:text-5xl">Mario Andrés Rojas Varela</h1>
-    <p class="mt-4 text-lg text-slate-400">
-      Computer Engineering student · AI · IoT
-    </p>
+  <Header />
+  <main id="top" class="mx-auto max-w-5xl px-6">
+    <section class="flex min-h-[80vh] flex-col justify-center py-20">
+      <p class="reveal text-sm uppercase tracking-widest text-cyan-400">
+        Computer Engineering · AI · IoT
+      </p>
+      <h1 class="reveal mt-3 text-4xl font-bold tracking-tight sm:text-6xl" style="animation-delay: 80ms">
+        Mario Andrés Rojas Varela
+      </h1>
+      <p class="reveal mt-6 max-w-2xl text-lg text-slate-400" style="animation-delay: 160ms">
+        I'm a Computer Engineering student at the Costa Rica Institute of Technology (TEC),
+        San Carlos Campus, with a strong interest in artificial intelligence and IoT.
+        I'm eager to keep growing at the intersection of AI, embedded systems, and software.
+      </p>
+      <div class="reveal mt-8 flex flex-wrap gap-4" style="animation-delay: 240ms">
+        <a href="#projects" class="rounded-md bg-cyan-500 px-5 py-2.5 text-sm font-medium text-slate-950 transition-colors hover:bg-cyan-400">
+          View projects
+        </a>
+        <a href="https://github.com/MarioRojasV" target="_blank" rel="noopener noreferrer" class="rounded-md border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-400 hover:text-cyan-400">
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/mario-andres-rojas-varela" target="_blank" rel="noopener noreferrer" class="rounded-md border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-400 hover:text-cyan-400">
+          LinkedIn
+        </a>
+      </div>
+    </section>
+
+    {sections.map((s) =>
+      s.id === 'projects' ? (
+        <Projects />
+      ) : (
+        <section id={s.id} class="scroll-mt-20 border-t border-slate-800 py-20">
+          <h2 class="text-2xl font-semibold tracking-tight">{s.title}</h2>
+          <p class="mt-4 text-slate-500">Coming soon.</p>
+        </section>
+      ),
+    )}
   </main>
 </Layout>
