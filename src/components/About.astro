@@ -1,0 +1,93 @@
+---
+const facts = [
+  { key: 'studying', value: 'Computer Engineering, TEC' },
+  { key: 'campus', value: 'San Carlos, Costa Rica' },
+  { key: 'focus', value: 'AI · IoT · Software' },
+  { key: 'working_on', value: 'COMPDES 2027 website' },
+  { key: 'open_to', value: 'Internships · Collaborations' },
+];
+
+const interests = ['Machine Learning', 'IoT', 'Embedded Systems', 'Software Development'];
+---
+
+<section id="about" class="scroll-mt-20 border-t border-slate-800 py-20">
+  <h2 class="text-2xl font-semibold tracking-tight">About</h2>
+
+  <div class="mt-8 grid gap-10 md:grid-cols-5">
+    <div class="space-y-4 text-slate-400 md:col-span-3" data-reveal>
+      <p class="leading-relaxed">
+        I'm a Computer Engineering student at the Costa Rica Institute of Technology (TEC),
+        San Carlos Campus, interested in the point where software, artificial intelligence,
+        and physical devices meet.
+      </p>
+      <p class="leading-relaxed">
+        My path so far includes internships in IT support and networking at SINAC and Encora,
+        coursework projects across compilers, operating systems, machine learning, and QA,
+        and presenting our bird-classification research, a comparison of CNN models, at
+        COMPDES 2026 in El Salvador.
+      </p>
+      <p class="leading-relaxed">
+        Lately I've been exploring IoT through courses on Arduino, sensors, and actuators,
+        and I'm looking to build my first ESP32-based project. I learn by building, and I'm
+        looking for internships and collaborations where I can keep growing at the
+        intersection of AI, embedded systems, and software.
+      </p>
+
+      <ul class="flex flex-wrap gap-2 pt-2">
+        {interests.map((item) => (
+          <li class="rounded bg-slate-800 px-2 py-1 text-xs text-slate-300">{item}</li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="md:col-span-2" data-reveal>
+      <div class="overflow-hidden rounded-lg border border-slate-800 bg-slate-900/50 transition-colors hover:border-cyan-500/60">
+        <div class="border-b border-slate-800 bg-slate-900 px-4 py-2 font-mono text-xs text-slate-500">
+          ~/about.json
+        </div>
+        <dl class="space-y-3 p-5 font-mono text-sm">
+          {facts.map((fact) => (
+            <div class="flex flex-wrap gap-x-3">
+              <dt class="text-cyan-400">{fact.key}:</dt>
+              <dd class="text-slate-300">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  [data-reveal] {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  [data-reveal][data-pending] {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+</style>
+
+<script>
+  const items = document.querySelectorAll<HTMLElement>('#about [data-reveal]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).removeAttribute('data-pending');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    items.forEach((el) => {
+      el.setAttribute('data-pending', '');
+      observer.observe(el);
+    });
+  }
+</script>

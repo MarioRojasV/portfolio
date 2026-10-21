@@ -2,6 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Projects from '../components/Projects.astro';
+import Certifications from '../components/Certifications.astro';
+import Contact from '../components/Contact.astro';
+import Experience from '../components/Experience.astro';
+import About from '../components/About.astro';
 
 const sections = [
   { id: 'about', title: 'About' },
@@ -43,6 +47,14 @@ const sections = [
     {sections.map((s) =>
       s.id === 'projects' ? (
         <Projects />
+      ) : s.id === 'certifications' ? (
+        <Certifications />
+      ) : s.id === 'about' ? (
+        <About />
+      ) : s.id === 'experience' ? (
+        <Experience />
+      ) : s.id === 'contact' ? (
+        <Contact />
       ) : (
         <section id={s.id} class="scroll-mt-20 border-t border-slate-800 py-20">
           <h2 class="text-2xl font-semibold tracking-tight">{s.title}</h2>

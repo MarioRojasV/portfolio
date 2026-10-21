@@ -1,0 +1,143 @@
+---
+import { certificateGroups, formatDate, sortValue } from '../data/certificates';
+
+const groups = certificateGroups
+  .filter((g) => g.certificates.length > 0)
+  .map((g) => ({
+    ...g,
+    certificates: [...g.certificates].sort((a, b) => sortValue(b) - sortValue(a)),
+  }));
+
+const total = groups.reduce((n, g) => n + g.certificates.length, 0);
+---
+
+<section id="certifications" class="scroll-mt-20 border-t border-slate-800 py-20">
+  <h2 class="text-2xl font-semibold tracking-tight">Certifications</h2>
+  <p class="mt-4 text-slate-400">
+    {total} certificates and recognitions. Open a group and select a certificate to view it.
+  </p>
+
+  <div class="mt-8 flex flex-col gap-4">
+    {groups.map((group) => (
+      <details class="cert-group group rounded-lg border border-slate-800 bg-slate-900/50 transition-colors hover:border-cyan-500/60 open:border-cyan-500/60">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg p-5 focus-visible:outline-2 focus-visible:outline-cyan-400 [&::-webkit-details-marker]:hidden">
+          <div class="flex items-center gap-3">
+            <h3 class="text-lg font-semibold text-slate-100">{group.name}</h3>
+            <span class="rounded-full border border-slate-700 px-2.5 py-0.5 text-xs text-slate-400">
+              {group.certificates.length}
+            </span>
+          </div>
+          <span class="text-cyan-400 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">▾</span>
+        </summary>
+
+        <ul class="cert-list divide-y divide-slate-800 border-t border-slate-800 px-5">
+          {group.certificates.map((cert) => (
+            <li class="flex flex-wrap items-center justify-between gap-3 py-4">
+              <div>
+                <p class="font-medium text-slate-200">{cert.title}</p>
+                <p class="text-sm text-slate-500">{cert.issuer} · {formatDate(cert)}</p>
+              </div>
+              <div class="flex gap-4 text-sm">
+                <button
+                  type="button"
+                  data-cert-src={cert.image}
+                  data-cert-title={cert.title}
+                  class="text-slate-200 underline-offset-4 hover:text-cyan-400 hover:underline"
+                >
+                  View certificate
+                </button>
+                {cert.verifyUrl && (
+                  <a
+                    href={cert.verifyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-slate-200 underline-offset-4 hover:text-cyan-400 hover:underline"
+                  >
+                    Verify
+                  </a>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </details>
+    ))}
+  </div>
+
+  <dialog
+    id="cert-dialog"
+    aria-labelledby="cert-dialog-title"
+    class="cert-dialog m-auto w-[min(92vw,56rem)] rounded-lg border border-slate-700 bg-slate-900 p-0 text-slate-200"
+  >
+    <div class="flex items-center justify-between gap-4 border-b border-slate-800 px-5 py-3">
+      <p id="cert-dialog-title" class="text-sm font-medium"></p>
+      <button
+        type="button"
+        id="cert-dialog-close"
+        aria-label="Close"
+        class="rounded px-2 py-1 text-slate-400 transition-colors hover:text-cyan-400"
+      >
+        ✕
+      </button>
+    </div>
+    <img id="cert-dialog-img" alt="" class="max-h-[80vh] w-full bg-black object-contain" />
+  </dialog>
+</section>
+
+<style>
+  .cert-group[open] .cert-list {
+    animation: cert-reveal 250ms ease-out;
+  }
+  .cert-dialog[open] {
+    animation: cert-zoom 200ms ease-out;
+  }
+  .cert-dialog::backdrop {
+    background: rgb(2 6 23 / 0.8);
+    backdrop-filter: blur(4px);
+  }
+  @keyframes cert-reveal {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cert-zoom {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cert-group[open] .cert-list,
+    .cert-dialog[open] {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#cert-dialog');
+  const img = document.querySelector<HTMLImageElement>('#cert-dialog-img');
+  const title = document.querySelector<HTMLElement>('#cert-dialog-title');
+  const closeBtn = document.querySelector<HTMLButtonElement>('#cert-dialog-close');
+
+  if (dialog && img && title && closeBtn) {
+    document.querySelectorAll<HTMLButtonElement>('[data-cert-src]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const name = btn.dataset.certTitle ?? '';
+        img.src = btn.dataset.certSrc ?? '';
+        img.alt = `${name} certificate`;
+        title.textContent = name;
+        dialog.showModal();
+      });
+    });
+
+    closeBtn.addEventListener('click', () => dialog.close());
+
+    // Close when clicking the backdrop (outside the dialog box)
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    // Release the image when closed
+    dialog.addEventListener('close', () => {
+      img.removeAttribute('src');
+    });
+  }
+</script>

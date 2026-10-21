@@ -1,0 +1,77 @@
+---
+const email = 'marioandresrojasvarela@gmail.com';
+const linkedin = 'https://linkedin.com/in/mario-andres-rojas-varela';
+const github = 'https://github.com/MarioRojasV';
+const cv = '/cv/Mario-Andres-Rojas-Varela-CV.pdf';
+---
+
+<section id="contact" class="scroll-mt-20 border-t border-slate-800 py-20">
+  <h2 class="text-2xl font-semibold tracking-tight">Contact</h2>
+  <p class="mt-4 max-w-2xl text-slate-400">
+    Open to internships and collaborations in AI and IoT projects.
+  </p>
+  <p class="mt-2 text-sm text-slate-500">San Carlos, Costa Rica</p>
+
+  <div class="mt-8 flex flex-wrap items-center gap-4">
+    <a
+      href={`mailto:${email}`}
+      class="rounded-md bg-cyan-500 px-5 py-2.5 text-sm font-medium text-slate-950 transition-colors hover:bg-cyan-400"
+    >
+      Send an email
+    </a>
+    <button
+      type="button"
+      id="copy-email"
+      data-email={email}
+      class="rounded-md border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-400 hover:text-cyan-400"
+    >
+      Copy email
+    </button>
+    <span id="copy-status" class="text-sm text-cyan-400" role="status" aria-live="polite"></span>
+  </div>
+
+  <div class="mt-4 flex flex-wrap gap-4">
+    <a
+      href={linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="rounded-md border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-400 hover:text-cyan-400"
+    >
+      LinkedIn
+    </a>
+    <a
+      href={github}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="rounded-md border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-400 hover:text-cyan-400"
+    >
+      GitHub
+    </a>
+    <a
+      href={cv}
+      download
+      class="rounded-md border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-400 hover:text-cyan-400"
+    >
+      Download CV
+    </a>
+  </div>
+
+  <p class="mt-6 text-sm text-slate-500">{email}</p>
+</section>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('#copy-email');
+  const status = document.querySelector<HTMLElement>('#copy-status');
+
+  if (btn && status) {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.email ?? '');
+        status.textContent = 'Copied!';
+      } catch {
+        status.textContent = 'Could not copy, please select the address below.';
+      }
+      setTimeout(() => (status.textContent = ''), 2500);
+    });
+  }
+</script>

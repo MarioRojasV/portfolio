@@ -1,0 +1,136 @@
+---
+const roles = [
+  {
+    path: 'encora',
+    title: 'Professional Internship in IT and Networking',
+    org: 'Encora',
+    period: '2023 · 2 months',
+    points: [
+      'Automated a recurring process with Excel macros: rows matching a condition in a spreadsheet triggered emails to the people involved.',
+      'Maintained and troubleshot physical equipment across platforms, including Macs and an iPhone, and reformatted a computer after a virus infection.',
+      "Mapped the site's network cabling end to end, documenting where each cable ran, and assisted with firewall-related tasks.",
+    ],
+    tags: ['Excel Macros', 'Networking', 'Hardware Support', 'macOS'],
+  },
+  {
+    path: 'sinac',
+    title: 'Work Internship in IT Systems',
+    org: 'SINAC',
+    period: '2022 · 1 week',
+    points: [
+      'Provided technical support to employees, including assistance over the phone.',
+      'Supported basic network configuration.',
+    ],
+    tags: ['Tech Support', 'Networking'],
+  },
+];
+
+const impact = [
+  {
+    big: '2 editions',
+    label: 'Informatics race event',
+    text: 'Software I worked on was used in a real event with hundreds of runners, in 2025 and again in 2026.',
+  },
+  {
+    big: 'Ibero-America',
+    label: 'COMPDES 2027 website',
+    text: 'In progress: the official conference site, built to be visited by hundreds of people from many countries.',
+  },
+];
+---
+
+<section id="experience" class="scroll-mt-20 border-t border-slate-800 py-20">
+  <h2 class="text-2xl font-semibold tracking-tight">Experience</h2>
+  <p class="mt-4 max-w-2xl text-slate-400">
+    Hands-on work in real settings: internships, and projects used by real people.
+  </p>
+
+  <ol class="mt-10 border-l border-slate-800">
+    {roles.map((role) => (
+      <li class="relative pb-10 pl-8 last:pb-0" data-reveal>
+        <span
+          class="absolute -left-[7px] top-2 h-3.5 w-3.5 rounded-full border-2 border-cyan-400 bg-slate-950 shadow-[0_0_10px_rgb(34_211_238/0.7)]"
+          aria-hidden="true"
+        ></span>
+
+        <div class="overflow-hidden rounded-lg border border-slate-800 bg-slate-900/50 transition-colors hover:border-cyan-500/60">
+          <div class="flex items-center justify-between gap-4 border-b border-slate-800 bg-slate-900 px-4 py-2 font-mono text-xs text-slate-500">
+            <span>~/experience/{role.path}.log</span>
+            <span class="text-cyan-400">{role.period}</span>
+          </div>
+
+          <div class="p-5">
+            <h3 class="text-lg font-semibold text-slate-100">{role.title}</h3>
+            <p class="mt-1 text-sm text-cyan-400">{role.org}</p>
+
+            <ul class="mt-4 space-y-2 text-sm leading-relaxed text-slate-400">
+              {role.points.map((point) => (
+                <li class="flex gap-3">
+                  <span class="select-none font-mono text-cyan-400" aria-hidden="true">›</span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {role.tags.map((tag) => (
+                <li class="rounded bg-slate-800 px-2 py-1 text-xs text-slate-300">{tag}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <h3 class="mt-16 text-sm font-medium uppercase tracking-widest text-slate-500">
+    Beyond the classroom
+  </h3>
+  <div class="mt-4 grid gap-4 sm:grid-cols-2">
+    {impact.map((item) => (
+      <a
+        href="#projects"
+        class="block rounded-lg border border-slate-800 bg-slate-900/50 p-6 transition-colors hover:border-cyan-500/60"
+        data-reveal
+      >
+        <p class="text-3xl font-bold tracking-tight text-cyan-400">{item.big}</p>
+        <p class="mt-1 text-sm font-medium text-slate-200">{item.label}</p>
+        <p class="mt-3 text-sm leading-relaxed text-slate-400">{item.text}</p>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  [data-reveal] {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  [data-reveal][data-pending] {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+</style>
+
+<script>
+  const items = document.querySelectorAll<HTMLElement>('#experience [data-reveal]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).removeAttribute('data-pending');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    items.forEach((el) => {
+      el.setAttribute('data-pending', '');
+      observer.observe(el);
+    });
+  }
+</script>
