@@ -6,7 +6,11 @@ status: "completed"
 tags: ["Python", "RFID", "WebSocket", "MongoDB", "Web"]
 role: "Co-developer, with two classmates: initial backend (API, worker, database, live WebSocket) and the RFID reader app"
 repo: "https://github.com/maovares/carrera-informatico-rfid.git"
+paper: "https://www.compdes.org/libros/compdes2025.pdf"
+paperLabel: "Paper (COMPDES 2025)"
 preview: "/projects/rfid-race-timing/demo.gif"
+previewWidth: 800
+previewHeight: 451
 ---
 
 Used in a real race organized by the School of Computing at TEC San Carlos, with a 5k recreational category and a competitive 10k split into subcategories for men and women. Some 10k runners wore RFID tags on their bibs, and crossing the finish line recorded their time from a global start time set per category. Every timing source reported to a central server connected over WebSockets to an admin panel, where organizers could view times and podiums, edit or delete records, and assign tags to runners. A tablet-based client let a person enter arriving runners manually, and each entry appeared in the admin panel immediately.

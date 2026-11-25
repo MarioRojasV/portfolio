@@ -8,6 +8,8 @@ role: "Co-developer, with one classmate"
 repo: "https://github.com/MarioRojasV/assembly-online-chess.git"
 video: "https://youtu.be/2ouz1pZpi7w"
 preview: "/projects/assembly-chess/demo.gif"
+previewWidth: 800
+previewHeight: 450
 ---
 
 Course project. Pieces are drawn as letters in the console. A Python script syncs the game file between players through Firestore.

@@ -15,7 +15,11 @@ const projects = defineCollection({
     video: z.string().url().optional(),
     demo: z.string().url().optional(),
     paper: z.string().url().optional(),
+    paperLabel: z.string().optional(),
+    results: z.array(z.string()).optional(),
     preview: z.string().optional(),
+    previewWidth: z.number().optional(),
+    previewHeight: z.number().optional(),
   }),
 });
 

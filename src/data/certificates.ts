@@ -22,17 +22,11 @@ export const sortValue = (c: Certificate): number => c.year * 12 + (c.month ?? 0
 
 export const certificateGroups: CertificateGroup[] = [
   {
-    id: 'cisco',
-    name: 'Cisco Networking Academy',
+    id: 'compdes',
+    name: 'COMPDES',
     certificates: [
-      { title: 'CCNA 1', issuer: 'Cisco Networking Academy', year: 2022, month: 6, image: '/certificates/cisco/ccna-1.webp' },
-      { title: 'CCNA 2', issuer: 'Cisco Networking Academy', year: 2022, month: 10, image: '/certificates/cisco/ccna-2.webp' },
-      { title: 'CCNA 3', issuer: 'Cisco Networking Academy', year: 2022, month: 12, image: '/certificates/cisco/ccna-3.webp' },
-      { title: 'Cybersecurity Essentials', issuer: 'Cisco Networking Academy', year: 2022, month: 12, image: '/certificates/cisco/cybersecurity-essentials.webp' },
-      { title: 'Introduction to Packet Tracer', issuer: 'Cisco Networking Academy', year: 2021, month: 9, image: '/certificates/cisco/introduction-packet-tracer.webp' },
-      { title: 'IT Essentials', issuer: 'Cisco Networking Academy', year: 2021, month: 11, image: '/certificates/cisco/it-essentials.webp' },
-      { title: 'NDG Linux Essentials', issuer: 'Cisco Networking Academy', year: 2023, month: 6, image: '/certificates/cisco/linux-essentials.webp' },
-      { title: 'PCAP: Programming Essentials in Python', issuer: 'Cisco Networking Academy', year: 2021, month: 12, image: '/certificates/cisco/python-essentials.webp' },
+      { title: 'Speaker participation, COMPDES 2025 (Guatemala)', issuer: 'Red COMPDES', year: 2025, image: '/certificates/compdes/compdes-2025.webp' },
+      { title: 'Paper presentation on bird classification, COMPDES 2026 (El Salvador)', issuer: 'Red COMPDES', year: 2026, image: '/certificates/compdes/compdes-2026.webp' },
     ],
   },
   {
@@ -50,11 +44,17 @@ export const certificateGroups: CertificateGroup[] = [
     ],
   },
   {
-    id: 'compdes',
-    name: 'COMPDES',
+    id: 'cisco',
+    name: 'Cisco Networking Academy',
     certificates: [
-      { title: 'Speaker participation, COMPDES 2025 (Guatemala)', issuer: 'Red COMPDES', year: 2025, image: '/certificates/compdes/compdes-2025.webp' },
-      { title: 'Paper presentation on bird classification, COMPDES 2026 (El Salvador)', issuer: 'Red COMPDES', year: 2026, image: '/certificates/compdes/compdes-2026.webp' },
+      { title: 'CCNA 1', issuer: 'Cisco Networking Academy', year: 2022, month: 6, image: '/certificates/cisco/ccna-1.webp' },
+      { title: 'CCNA 2', issuer: 'Cisco Networking Academy', year: 2022, month: 10, image: '/certificates/cisco/ccna-2.webp' },
+      { title: 'CCNA 3', issuer: 'Cisco Networking Academy', year: 2022, month: 12, image: '/certificates/cisco/ccna-3.webp' },
+      { title: 'Cybersecurity Essentials', issuer: 'Cisco Networking Academy', year: 2022, month: 12, image: '/certificates/cisco/cybersecurity-essentials.webp' },
+      { title: 'Introduction to Packet Tracer', issuer: 'Cisco Networking Academy', year: 2021, month: 9, image: '/certificates/cisco/introduction-packet-tracer.webp' },
+      { title: 'IT Essentials', issuer: 'Cisco Networking Academy', year: 2021, month: 11, image: '/certificates/cisco/it-essentials.webp' },
+      { title: 'NDG Linux Essentials', issuer: 'Cisco Networking Academy', year: 2023, month: 6, image: '/certificates/cisco/linux-essentials.webp' },
+      { title: 'PCAP: Programming Essentials in Python', issuer: 'Cisco Networking Academy', year: 2021, month: 12, image: '/certificates/cisco/python-essentials.webp' },
     ],
   },
   {

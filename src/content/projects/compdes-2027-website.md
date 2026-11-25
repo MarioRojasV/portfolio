@@ -8,6 +8,8 @@ role: "Co-developer, with one classmate"
 repo: "https://github.com/MarioRojasV/website_COMPDES_2027.git"
 demo: "https://www.compdes.org/compdes2027/"
 preview: "/projects/compdes-2027-website/preview_web.gif"
+previewWidth: 800
+previewHeight: 342
 ---
 
 Website for the COMPDES 2027 congress, to be held July 21-23, 2027 at the TEC San Carlos campus. Component-based architecture that makes content updates and new features easy to maintain.

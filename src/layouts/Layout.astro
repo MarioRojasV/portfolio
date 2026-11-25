@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -7,9 +8,13 @@ interface Props {
 }
 
 const {
-  title = 'Mario Andrés Rojas Varela',
-  description = 'Computer Engineering student focused on AI and IoT.',
+  title = 'Mario Rojas | Computer Engineering Student, AI & IoT',
+  description = 'Computer Engineering student at TEC San Carlos focused on AI, IoT and software, building projects that connect intelligent systems with the physical world.',
 } = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://mariorojas.vercel.app');
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL('/og-image.png', siteUrl).toString();
 ---
 
 <!doctype html>
@@ -19,8 +24,24 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
   </head>
   <body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
     <slot />
+    <Analytics />
   </body>
 </html>
