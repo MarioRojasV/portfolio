@@ -6,6 +6,7 @@ status: "completed"
 tags: ["Python", "TensorFlow", "Keras", "Transfer Learning", "Google Colab"]
 role: "Co-author, with two classmates"
 repo: "https://github.com/MarioRojasV/CNN_Models_Comparison_Bird_Classification"
+demo: "/bird-demo/"
 preview: "/projects/bird-classification/preview_birds.png"
 previewWidth: 1600
 previewHeight: 800

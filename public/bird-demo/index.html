@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bird Classifier | Turdus grayi vs Quiscalus mexicanus</title>
+  <meta name="description" content="Live demo of a MobileNetV2 classifier that tells apart two visually similar Costa Rican birds. Runs in your browser; your photo never leaves your device.">
+  <link rel="canonical" href="https://mariorojas.vercel.app/bird-demo/">
+  <meta property="og:title" content="Bird Classifier | Turdus grayi vs Quiscalus mexicanus">
+  <meta property="og:description" content="Live demo of a MobileNetV2 classifier that tells apart two visually similar Costa Rican birds. Runs in your browser; your photo never leaves your device.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mariorojas.vercel.app/bird-demo/">
+  <style>
+    :root {
+      --bg: #ffffff; --fg: #1d2421; --muted: #5b6761; --card: #f3f6f4; --border: #d6ddd9;
+      --accent: #2f7d5b; --accent-fg: #ffffff; --bar: #dfe6e2; --warn-bg: #fff4d6; --warn-fg: #6b4e00;
+      --err: #b3261e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12171a; --fg: #e8eeeb; --muted: #9aa8a1; --card: #1b2226; --border: #2d3a40;
+        --accent: #5cc496; --accent-fg: #0c1512; --bar: #2a353b; --warn-bg: #3a3212; --warn-fg: #f1d98a;
+        --err: #ff8a80;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 32px 20px 48px; }
+    h1 { font-size: 1.6rem; margin: 0 0 8px; line-height: 1.25; }
+    h2 { font-size: 1.1rem; margin: 32px 0 8px; }
+    p { margin: 0 0 12px; }
+    .lead { color: var(--muted); }
+    .status { margin: 16px 0; padding: 10px 14px; border-radius: 8px; background: var(--card); border: 1px solid var(--border); font-size: .95rem; }
+    .status.ok { border-color: var(--accent); }
+    .status.error { border-color: var(--err); color: var(--err); }
+    .drop { display: block; border: 2px dashed var(--border); border-radius: 12px; padding: 28px 16px; text-align: center; cursor: pointer; background: var(--card); }
+    .drop.over, .drop:hover, .drop:focus-within { border-color: var(--accent); }
+    .drop strong { color: var(--accent); }
+    .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    #examples { margin-top: 20px; }
+    #examples h2 { margin-top: 0; }
+    #example-list { display: flex; flex-wrap: wrap; gap: 12px; }
+    .example { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 6px; cursor: pointer; color: var(--fg); font: inherit; font-size: .85rem; text-align: center; }
+    .example:hover { border-color: var(--accent); }
+    .example img { display: block; width: 110px; height: 80px; object-fit: cover; border-radius: 6px; margin-bottom: 4px; }
+    #result { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 260px) 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 620px) { #result { grid-template-columns: 1fr; } }
+    #result[hidden], [hidden] { display: none !important; }
+    #preview { width: 100%; max-height: 260px; object-fit: contain; border-radius: 10px; background: var(--card); border: 1px solid var(--border); }
+    #verdict { font-weight: 600; margin-bottom: 12px; }
+    .bar-row { display: grid; grid-template-columns: 1fr; gap: 4px; margin-bottom: 12px; }
+    .bar-label { font-size: .9rem; color: var(--muted); }
+    .bar { height: 12px; background: var(--bar); border-radius: 6px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--muted); }
+    .bar-fill.best { background: var(--accent); }
+    .bar-pct { font-size: .85rem; font-variant-numeric: tabular-nums; }
+    #warn { padding: 10px 14px; border-radius: 8px; background: var(--warn-bg); color: var(--warn-fg); font-size: .92rem; }
+    ul { padding-left: 20px; margin: 0 0 12px; }
+    li { margin-bottom: 6px; }
+    .small { font-size: .9rem; color: var(--muted); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Clay-colored Thrush vs female Great-tailed Grackle</h1>
+    <p class="lead">
+      Two visually similar Costa Rican birds: <em>Turdus grayi</em> (yigüirro) and the female
+      <em>Quiscalus mexicanus</em> (zanate). Upload a photo and a MobileNetV2 model, developed
+      for COMPDES 2026, tells you which one it thinks it is.
+    </p>
+
+    <div id="status" class="status">Loading…</div>
+
+    <label class="drop" id="drop">
+      <strong>Choose a photo</strong> or drag it here
+      <input id="file" type="file" accept="image/*">
+    </label>
+
+    <section id="examples" hidden>
+      <h2>Or try an example</h2>
+      <div id="example-list"></div>
+    </section>
+
+    <section id="result" hidden>
+      <img id="preview" alt="The photo you selected">
+      <div>
+        <div id="verdict"></div>
+        <div id="bars"></div>
+        <div id="warn" hidden>
+          Low confidence. The photo may be ambiguous, taken in flight, or show something the
+          model was not trained on.
+        </div>
+      </div>
+    </section>
+
+    <h2>Limitations</h2>
+    <ul>
+      <li>The model only knows <strong>two classes</strong>. Any other bird (or object) will still be forced into one of them.</li>
+      <li>It was trained on <strong>female</strong> grackles only, so males will not be classified reliably.</li>
+      <li>It performs noticeably worse on <strong>in-flight photos</strong> than on regular photos.</li>
+    </ul>
+
+    <h2>About the model</h2>
+    <p>
+      MobileNetV2 with transfer learning (frozen ImageNet base, 224×224 input). On the held-out
+      test set it reached 96.25% accuracy on regular photos (80 images) and 75% on in-flight
+      photos (20 images, a small sample).
+    </p>
+    <p class="small">
+      Everything runs in your browser with TensorFlow.js: your photo is not uploaded anywhere.
+      <!-- TODO: add a link to the COMPDES 2026 paper here. -->
+      <a href="https://github.com/MarioRojasV/CNN_Models_Comparison_Bird_Classification" target="_blank" rel="noopener noreferrer">Code and training notebooks on GitHub</a>
+      ·
+      <a href="/">Back to portfolio</a>
+    </p>
+  </main>
+
+  <script src="vendor/tf.min.js"></script>
+  <script src="demo.js"></script>
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@ const projects = defineCollection({
     role: z.string().optional(),
     repo: z.string().url().optional(),
     video: z.string().url().optional(),
-    demo: z.string().url().optional(),
+    demo: z.string().optional(),
     paper: z.string().url().optional(),
     paperLabel: z.string().optional(),
     results: z.array(z.string()).optional(),
